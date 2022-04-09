@@ -1,7 +1,9 @@
 import React from "react";
 
-export default (props) => {
-  const people = props.people;
-
-  return <ul>{people && people.length == 1 ? <li></li> : undefined}</ul>;
-};
+export default ({ people }) => (
+  <ul>
+    {people && people.length > 0
+      ? people.map((person, index) => <li key={index}> {person} </li>)
+      : undefined}
+  </ul>
+);
