@@ -1,27 +1,41 @@
-import { render, screen } from "@testing-library/react";
 import { shallow } from "enzyme";
 import App from "./App";
-import { PersonList } from "./Components";
+import { PeopleList } from "./Components";
+import { ComponentWrapper } from "./tests/utils";
+
+import {
+  ensureEqual,
+  ensureHasLength,
+  ensureIsArray,
+  ensureIsDefined,
+  ensureNotNull,
+} from "./tests/utils/matchers";
 
 describe("App", () => {
   let appWrapper;
+
   beforeAll(() => {
-    appWrapper = shallow(<App />);
+    appWrapper = new ComponentWrapper(<App />);
   });
 
-  it("should render only PersonList component", () => {
-    const personList = appWrapper.find(PersonList);
-    expect(personList).toHaveLength(1);
+  it("should render only PeopleList component", () => {
+    const peopleList = appWrapper.findComponent(PeopleList);
+    ensureHasLength(peopleList, 1);
   });
-  it("should have a state ", () => {
-    const state = appWrapper.state();
-    expect(state).not.toBeNull();
+  it("should have a state", () => {
+    const state = appWrapper.getState();
+    ensureNotNull(state);
   });
 
-  it("the state should have people array ", () => {
-    const state = appWrapper.state();
+  it("the state should have people array", () => {
+    const state = appWrapper.getState();
     const people = state.people;
-    expect(people).toBeDefined();
-    expect(Array.isArray(people)).toBeTruthy();
+    ensureIsDefined(people);
+    ensureIsArray(people);
+  });
+  it("Ensure that the apps is passing state people to the PeopleList component", () => {
+    const state = appWrapper.getState();
+    const peopleList = appWrapper.findComponent(PeopleList);
+    ensureEqual(peopleList.props().people, state.people);
   });
 });
