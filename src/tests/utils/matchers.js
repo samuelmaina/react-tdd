@@ -16,3 +16,7 @@ export const ensureEqual = (actual, expected) => {
 export const ensureIsArray = (value) => {
   expect(Array.isArray(value)).toBeTruthy();
 };
+
+export const ensureContains = (list, value) => {
+  expect(list).toContain(value);
+};
